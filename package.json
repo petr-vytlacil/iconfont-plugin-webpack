@@ -1,0 +1,29 @@
+{
+  "name": "iconfont-plugin-webpack",
+  "version": "0.0.1",
+  "description": "Iconfont Generator.",
+  "main": "index.js",
+  "keywords": [
+    "webpack",
+    "plugin",
+    "iconfont"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/HaoyCn/iconfont-plugin-webpack/"
+  },
+  "author": {
+    "name": "HaoyCn",
+    "email": "xuhaoyang@live.com"
+  },
+  "bugs": {
+    "url": "https://github.com/HaoyCn/iconfont-plugin-webpack/issues"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "fonteditor-core": "0.0.37",
+    "run-plugin-webpack": "0.0.1",
+    "svg2ttf": "^4.0.2",
+    "svgicons2svgfont": "^5.0.0"
+  }
+}
