@@ -7,6 +7,17 @@ const fs = require('fs');
 const path = require('path');
 const svgToTtf = require('svg2ttf');
 
+function shouldReplace(svg) {
+	try {
+		fs.accessSync(svg.path, fs.constants ? fs.constants.R_OK : fs.R_OK);
+	} catch(e) {
+		return true;
+	}
+	const oldFile = fs.readFileSync(svg.path).toString();
+	const newFile = svg.contents.toString();
+	return oldFile !== newFile;
+}
+
 const Plugin = Base.extends(function(options) {
 	this.options = this.getOptions(options);
 });
@@ -102,7 +113,7 @@ Plugin.prototype.generateFonts = function(family, files) {
 			inflate: null,
 			combinePath: true
 		});
-		['ttf', 'svg', 'woff', 'eot'].forEach(function(type) {
+		const files = ['svg', 'ttf', 'woff', 'eot'].map(function(type) {
 			const buffer = fontCreator.write({
 				type: type,
 				hinting: true,
@@ -111,10 +122,18 @@ Plugin.prototype.generateFonts = function(family, files) {
 			const filePath = context.options.dest.font
 				.replace(/\[family\]/g, family)
 				.replace(/\[type\]/g, type);
-			context.addFile(filePath, buffer);
+			return { path:filePath, contents: buffer };
+		}, []);
+		return { files: files, unicodes: args.unicodes };
+	}).then(function(args) {
+		const files = args.files;
+		const unicodes = args.unicodes;
+		if(!shouldReplace(files[0])) {
+			return;
+		}
+		files.forEach(function(file) {
+			return context.addFile(file.path, file.contents);
 		});
-		return args.unicodes;
-	}).then(function(unicodes) {
 		return Promise.resolve(context.options.cssTemplate({
 			unicodes: unicodes,
 			family: family
