@@ -28,6 +28,19 @@ const TEMPLATE = `
 	}
 	@return map-get($group, $name);
 }
+
+@mixin iconfont($icon) {
+  &:before{
+    font-family: "__FAMILY__";
+    content: iconfont-item($icon);
+  }
+}
+
+@font-face {
+ font-family: "__FAMILY__";
+ src: url("__FULL_FILE_NAME__.woff") format("woff"),
+        url("__FULL_FILE_NAME__.ttf") format("ttf");
+}
 `;
 
 function toSCSS(glyphs) {
@@ -46,8 +59,18 @@ module.exports = function(args) {
 	const data = {};
 	data[family] = glyphs;
 
+    const replacements = {
+        __FAMILY__: family,
+        __FULL_FILE_NAME__: family,
+        goat:"cat"
+    };
+
+    const str = TEMPLATE.replace(/__FAMILY__|__FULL_FILE_NAME__|goat/gi, function(matched){
+        return replacements[matched];
+    });
+
 	return [
 		`$__iconfont__data: map-merge(if(global_variable_exists('__iconfont__data'), $__iconfont__data, ()), ${toSCSS(data)});`,
-		TEMPLATE
+		str
 	].join('\n\n');
 };
