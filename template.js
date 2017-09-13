@@ -1,6 +1,17 @@
 'use strict';
 
 const TEMPLATE = `
+@function iconfont-group($group: null) {
+	@if (null == $group) {
+		$group: nth(map-keys($__iconfont__data), 1);
+	}
+	@if (false == map-has-key($__iconfont__data, $group)) {
+		@warn 'Undefined Iconfont Family!';
+		@return ();
+	}
+	@return map-get($__iconfont__data, $group);
+}
+
 @function iconfont-item($name) {
 	$slash: str-index($name, '/');
 	$group: null;
@@ -17,17 +28,7 @@ const TEMPLATE = `
 	}
 	@return map-get($group, $name);
 }
-
-@function iconfont-group($group: null) {
-	@if (null == $group) {
-		$group: nth(map-keys($__iconfont__data), 1);
-	}
-	@if (false == map-has-key($__iconfont__data, $group)) {
-		@warn 'Undefined Iconfont Family!';
-		@return ();
-	}
-	@return map-get($__iconfont__data, $group);
-}`;
+`;
 
 function toSCSS(glyphs) {
 	return JSON.stringify(glyphs, null, '\t')
