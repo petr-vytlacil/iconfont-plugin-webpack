@@ -143,3 +143,25 @@ If the fonts get bigger than 8192 bytes they will get extracted into their own f
 otherwhise file-loader will embed them as base64 directly into the .css
 (See configuration for file-loader in [webpack.config.js](webpack.config.js#L47-L53))
 
+### Maintainers
+
+<table>
+  <tbody>
+    <tr>
+      <td align="center">
+        <a href="https://github.com/HaoyCn">
+          <img width="150" height="150" src="https://github.com/HaoyCn.png?v=3&s=150">
+          </br>
+          徐浩洋 · HaoyCn
+        </a>
+      </td>
+      <td align="center">
+        <a href="https://github.com/lucidlemon">
+          <img width="150" height="150" src="https://github.com/lucidlemon.png?v=3&s=150">
+          </br>
+          Daniel Winter
+        </a>
+      </td>
+    </tr>
+  <tbody>
+</table>
