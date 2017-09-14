@@ -14,14 +14,14 @@ module.exports = {
     },
     plugins: [
         new IconfontPlugin({
-            src: './demo/icons/',// dir of svg files.required
-            family: 'iconfont-family',// the `font-family`. optional. if multiple iconfonts generated, the dir names will be used.
+            src: './demo/icons/',
+            family: 'iconfont-family',
             dest: {
-                font: './demo/fonts/[family].[type]',// paths of generated font files. required.
-                css: './demo/scss/_[family].scss'// paths of generated css files. required.
+                font: './demo/fonts/[family].[type]',
+                css: './demo/scss/_[family].scss'
             },
             watch: {
-                pattern: './demo/icons/**/*.svg'// watch these files to reload. required.
+                pattern: './demo/icons/**/*.svg'
             }
         }),
 
@@ -47,7 +47,8 @@ module.exports = {
                     {
                         loader: 'url-loader',
                         options: {
-                            limit: 8192
+                            limit: 8192,
+                            outputPath: 'fonts/'
                         }
                     }
                 ]
