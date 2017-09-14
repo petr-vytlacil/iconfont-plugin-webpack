@@ -135,9 +135,11 @@ Plugin.prototype.generateFonts = function(family, files) {
 	}).then(function(args) {
 		const files = args.files;
 		const unicodes = args.unicodes;
+		const relativePathToFonts = path.relative(path.dirname(context.options.dest.css), path.dirname(context.options.dest.font));
 		const cssContent = context.options.cssTemplate({
             unicodes: unicodes,
-            family: family
+            family: family,
+			fontPath: relativePathToFonts,
         });
         const cssPath = context.options.dest.css.replace(/\[family\]/g, family);
 
