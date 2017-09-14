@@ -1,1 +1,32 @@
-//@import "iconfont-family";
+@import "iconfont-family";
+
+*{
+  color: #666;
+}
+
+
+.red{ color: red; }
+.blue{ color: blue; }
+.green{ color: green; }
+.black{ color: #000; }
+
+
+// easy integration with the automated mixin
+.ic_polygon {
+  @include iconfont('ic_polygon');
+}
+
+// or you can grab just the content as well
+.icon{
+  font-family: "iconfont-family";
+  &.ic_star{
+    &:before{
+      content: iconfont-item('ic_star');
+      font-style: normal;
+    }
+  }
+}
+
+.ic_triangle {
+  @include iconfont('ic_triangle');
+}
