@@ -1,19 +1,33 @@
-TO DO.
+# iconfont-plugin-webpack
 
-An Example:
+### Automatically generate Webfonts from your SVGs using Webpack
 
-	const IconfontPlugin = require('iconfont-plugin-webpack');
+#### Installation
 
+`npm install iconfont-plugin-webpack`
+
+
+#### Usage
+
+You can see a simple example within the [Demo Config](webpack.config.js), but basically you just need to include the package at the top of your webpack config like this:
+
+`const IconfontPlugin = require('iconfont-plugin-webpack');`
+
+And then set up the configuration within the `webpackModule.plugins` like this:
+
+```js
 	new IconfontPlugin({
-		src: './src/asset/iconfont',// dir of svg files.required
-		family: 'iconfont',// the `font-family`. optional. if multiple iconfonts generated, the dir names will be used.
+		src: './src/asset/iconfont', // required - directory where your .svg files are located
+		family: 'iconfont', // optional - the `font-family` name. if multiple iconfonts are generated, the dir names will be used.
 		dest: {
-			font: './src/font/[family].[type]',// paths of generated font files. required.
-			css: './src/css/_iconfont_[family].scss'// paths of generated css files. required.
+			font: './src/font/[family].[type]', // required - paths of generated font files
+			css: './src/css/_iconfont_[family].scss' // required - paths of generated css files
 		},
 		watch: {
-			pattern: 'src/asset/iconfont/**/*.svg',// watch these files to reload. required.
-			cwd: undefined// current working dir for watching. optional.
+			pattern: 'src/asset/iconfont/**/*.svg', // required - watch these files to reload
+			cwd: undefined // optional - current working dir for watching
 		},
-		cssTemplate: function() {}// the function to generate css contents. optional.
+		cssTemplate: function() {}// optional - the function to generate css contents
 	})
+```
+	

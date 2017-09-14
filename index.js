@@ -44,7 +44,7 @@ Plugin.prototype.getOptions = function(options) {
 	};
 	const cssTemplate = ('function' === typeof opts.cssTemplate
 		? opts.cssTemplate
-		: require('./template')
+		: require('./src/template')
 	);
 	return {
 		src: src,
