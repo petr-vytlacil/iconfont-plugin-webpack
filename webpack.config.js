@@ -40,6 +40,17 @@ module.exports = {
                     fallback: "style-loader",
                     use: ['css-loader', 'sass-loader']
                 })
+            },
+            {
+                test: /\.(png|gif|svg|eot|ttf|woff|woff2)$/,
+                use: [
+                    {
+                        loader: 'url-loader',
+                        options: {
+                            limit: 8192
+                        }
+                    }
+                ]
             }
         ]
     },
