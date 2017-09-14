@@ -128,7 +128,7 @@ Plugin.prototype.generateFonts = function(family, files) {
 	}).then(function(args) {
 		const files = args.files;
 		const unicodes = args.unicodes;
-		if(!shouldReplace(files[0])) {
+		if(!shouldReplace(files[0]) && fs.existsSync(context.options.dest.css.replace(/\[family\]/g, family))) {
 			return;
 		}
 		files.forEach(function(file) {
