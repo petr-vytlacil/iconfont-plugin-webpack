@@ -42,7 +42,7 @@ module.exports = {
                 })
             },
             {
-                test: /\.(png|gif|svg|eot|ttf|woff|woff2)$/,
+                test: /\.(svg|eot|ttf|woff|woff2)$/,
                 use: [
                     {
                         loader: 'url-loader',
