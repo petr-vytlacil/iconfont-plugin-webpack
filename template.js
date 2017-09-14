@@ -34,6 +34,8 @@ $create-font-face: true !default;
 @mixin iconfont($icon) {
   &:before{
     font-family: "__FAMILY__";
+    font-style: normal;
+    font-weight: 400;
     content: iconfont-item($icon);
   }
 }
