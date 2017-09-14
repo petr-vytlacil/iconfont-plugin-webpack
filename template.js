@@ -1,6 +1,8 @@
 'use strict';
 
 const TEMPLATE = `
+$create-font-face: true !default;
+
 @function iconfont-group($group: null) {
 	@if (null == $group) {
 		$group: nth(map-keys($__iconfont__data), 1);
@@ -36,10 +38,16 @@ const TEMPLATE = `
   }
 }
 
-@font-face {
- font-family: "__FAMILY__";
- src: url("__RELATIVE_FONT_PATH__/__FAMILY__.woff") format("woff"),
-        url("__RELATIVE_FONT_PATH__/__FAMILY__.ttf") format("ttf");
+@if $create-font-face == true{
+	@font-face {
+	 font-family: "__FAMILY__";
+	 src: url('__RELATIVE_FONT_PATH__/__FAMILY__.eot'); /* IE9 Compat Modes */
+	 src: url('__RELATIVE_FONT_PATH__/__FAMILY__.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+		  url('__RELATIVE_FONT_PATH__/__FAMILY__.woff') format('woff'), /* Pretty Modern Browsers */
+		  url('__RELATIVE_FONT_PATH__/__FAMILY__.ttf')  format('truetype'), /* Safari, Android, iOS */
+		  url('__RELATIVE_FONT_PATH__/__FAMILY__.svg') format('svg'); /* Legacy iOS */
+	 
+	}
 }
 `;
 
