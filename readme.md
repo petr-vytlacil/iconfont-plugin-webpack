@@ -1,3 +1,6 @@
+[![npm][npm]][npm-url]
+[![deps][deps]][deps-url]
+
 # iconfont-plugin-webpack
 
 ### Automatically generate Webfonts from your SVGs using Webpack
@@ -165,3 +168,12 @@ otherwhise file-loader will embed them as base64 directly into the .css
     </tr>
   <tbody>
 </table>
+
+
+
+
+[npm]: https://img.shields.io/npm/v/iconfont-plugin-webpack.svg
+[npm-url]: https://npmjs.com/package/iconfont-plugin-webpack
+
+[deps]: https://david-dm.org/webpack-contrib/iconfont-plugin-webpack.svg
+[deps-url]: https://david-dm.org/webpack-contrib/iconfont-plugin-webpack
