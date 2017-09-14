@@ -12,21 +12,17 @@
 
 
 // easy integration with the automated mixin
-.ic_polygon {
+.my_custom_icon {
   @include iconfont('ic_polygon');
 }
 
 // or you can grab just the content as well
-.icon{
+.custom_icon{
   font-family: "iconfont-family";
-  &.ic_star{
+  &.little_star{
     &:before{
       content: iconfont-item('ic_star');
       font-style: normal;
     }
   }
-}
-
-.ic_triangle {
-  @include iconfont('ic_triangle');
 }

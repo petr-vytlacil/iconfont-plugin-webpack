@@ -1,8 +1,23 @@
 'use strict';
 
 const TEMPLATE = `
-$create-font-face: true !default;
+$create-font-face: true !default; // should the @font-face tag get created?
 
+// should there be a custom class for each icon? will be .filename
+$create-icon-classes: true !default; 
+
+// what is the common class name that icons share? in this case icons need to have .icon.filename in their classes
+// this requires you to have 2 classes on each icon html element, but reduced redeclaration of the font family
+// for each icon
+$icon-common-class: 'icon' !default;
+
+// if you whish to prefix your filenames, here you can do so.
+// if this string stays empty, your classes will use the filename, for example
+// an icon called star.svg will result in a class called .star
+// if you use the prefix to be 'icon-' it would result in .icon-star
+$icon-prefix: '' !default; 
+
+// helper function to get the correct font group
 @function iconfont-group($group: null) {
 	@if (null == $group) {
 		$group: nth(map-keys($__iconfont__data), 1);
@@ -14,6 +29,7 @@ $create-font-face: true !default;
 	@return map-get($__iconfont__data, $group);
 }
 
+// helper function to get the correct icon of a group
 @function iconfont-item($name) {
 	$slash: str-index($name, '/');
 	$group: null;
@@ -31,6 +47,9 @@ $create-font-face: true !default;
 	@return map-get($group, $name);
 }
 
+// complete mixing to include the icon
+// usage:
+// .my_icon{ @include iconfont('star') }
 @mixin iconfont($icon) {
   &:before{
     font-family: "__FAMILY__";
@@ -40,6 +59,7 @@ $create-font-face: true !default;
   }
 }
 
+// creates the font face tag if the variable is set to true (default)
 @if $create-font-face == true{
 	@font-face {
 	 font-family: "__FAMILY__";
@@ -49,6 +69,25 @@ $create-font-face: true !default;
 		  url('__RELATIVE_FONT_PATH__/__FAMILY__.ttf')  format('truetype'), /* Safari, Android, iOS */
 		  url('__RELATIVE_FONT_PATH__/__FAMILY__.svg') format('svg'); /* Legacy iOS */
 	 
+	}
+}
+
+// creates icon classes for each individual loaded svg (default)
+@if $create-icon-classes == true{
+	.#{$icon-common-class}{
+		font-family: "__FAMILY__";
+		font-style: normal;
+		font-weight: 400;
+		
+		@each $family, $map in $__iconfont__data {
+			@each $icon, $content in $map {
+				&.#{$icon-prefix}#{$icon}{
+					&:before{
+						content: iconfont-item($icon);
+					}
+				}
+			}
+		}
 	}
 }
 `;

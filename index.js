@@ -7,6 +7,7 @@ const fs = require('fs');
 const path = require('path');
 const svgToTtf = require('svg2ttf');
 
+// checks if a recompilation is necessary
 function shouldReplace(svg, cssPath, newCssContent) {
 	try {
 		fs.accessSync(svg.path, fs.constants ? fs.constants.R_OK : fs.R_OK);
@@ -22,6 +23,7 @@ function shouldReplace(svg, cssPath, newCssContent) {
 	const svgDifferent = oldSvg !== newSvg; // returns true if new SVG is different
 	const cssDifferent = oldCss !== newCssContent; // returns true if new SCSS is different
 
+	// only rerender if svgs or scss are different
     return svgDifferent || cssDifferent ? true : false;
 }
 
@@ -155,6 +157,6 @@ Plugin.prototype.generateFonts = function(family, files) {
 			context.addFile(cssPath, cssContent);
 		});
 	}).catch(console.dir);
-}
+};
 
 module.exports = Plugin;
