@@ -7,15 +7,24 @@ const fs = require('fs');
 const path = require('path');
 const svgToTtf = require('svg2ttf');
 
-function shouldReplace(svg) {
+// checks if a recompilation is necessary
+function shouldReplace(svg, cssPath, newCssContent) {
 	try {
 		fs.accessSync(svg.path, fs.constants ? fs.constants.R_OK : fs.R_OK);
+        fs.accessSync(cssPath, fs.constants ? fs.constants.R_OK : fs.R_OK);
 	} catch(e) {
 		return true;
 	}
-	const oldFile = fs.readFileSync(svg.path).toString();
-	const newFile = svg.contents.toString();
-	return oldFile !== newFile;
+	const oldSvg = fs.readFileSync(svg.path).toString();
+	const newSvg = svg.contents.toString();
+
+    const oldCss = fs.readFileSync(cssPath).toString();
+
+	const svgDifferent = oldSvg !== newSvg; // returns true if new SVG is different
+	const cssDifferent = oldCss !== newCssContent; // returns true if new SCSS is different
+
+	// only rerender if svgs or scss are different
+    return svgDifferent || cssDifferent ? true : false;
 }
 
 const Plugin = Base.extends(function(options) {
@@ -37,7 +46,7 @@ Plugin.prototype.getOptions = function(options) {
 	};
 	const cssTemplate = ('function' === typeof opts.cssTemplate
 		? opts.cssTemplate
-		: require('./template')
+		: require('./src/template')
 	);
 	return {
 		src: src,
@@ -128,21 +137,26 @@ Plugin.prototype.generateFonts = function(family, files) {
 	}).then(function(args) {
 		const files = args.files;
 		const unicodes = args.unicodes;
-		if(!shouldReplace(files[0])) {
+		const relativePathToFonts = path.relative(path.dirname(context.options.dest.css), path.dirname(context.options.dest.font));
+		const cssContent = context.options.cssTemplate({
+            unicodes: unicodes,
+            family: family,
+			fontPath: relativePathToFonts,
+        });
+        const cssPath = context.options.dest.css.replace(/\[family\]/g, family);
+
+		if(!shouldReplace(files[0], cssPath, cssContent)) {
 			return;
 		}
 		files.forEach(function(file) {
 			return context.addFile(file.path, file.contents);
 		});
-		return Promise.resolve(context.options.cssTemplate({
-			unicodes: unicodes,
-			family: family
-		}))
+		return Promise.resolve(cssContent)
 		.then(function(cssContent) {
 			const cssPath = context.options.dest.css.replace(/\[family\]/g, family);
 			context.addFile(cssPath, cssContent);
 		});
 	}).catch(console.dir);
-}
+};
 
 module.exports = Plugin;
