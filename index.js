@@ -5,6 +5,7 @@ const svgiconsToSvgfont = require('svgicons2svgfont');
 const Font = require('fonteditor-core').Font;
 const fs = require('fs');
 const path = require('path');
+const slash = require('slash');
 const svgToTtf = require('svg2ttf');
 
 // checks if a recompilation is necessary
@@ -141,7 +142,7 @@ Plugin.prototype.generateFonts = function(family, files) {
 		const cssContent = context.options.cssTemplate({
             unicodes: unicodes,
             family: family,
-			fontPath: relativePathToFonts,
+			fontPath: slash(relativePathToFonts),
         });
         const cssPath = context.options.dest.css.replace(/\[family\]/g, family);
 

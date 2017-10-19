@@ -26,6 +26,7 @@
   "dependencies": {
     "fonteditor-core": "0.0.37",
     "run-plugin-webpack": "0.0.1",
+    "slash": "1.0.0",
     "string.prototype.codepointat": "0.2.0",
     "svg2ttf": "4.0.2",
     "svgicons2svgfont": "5.0.0"
