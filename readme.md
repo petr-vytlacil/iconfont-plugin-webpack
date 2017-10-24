@@ -137,7 +137,7 @@ In order to test the demo build included in this package all you need to do is c
 
 ```sh
 npm install
-npm run dev
+npm run demo
 ```
 
 You will then find the generated fonts within `/demo/fonts` and the generated .scss within `/demo/scss/_iconfont-family.scss`.
