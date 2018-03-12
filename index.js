@@ -89,7 +89,9 @@ Plugin.prototype.generateFonts = function(family, files) {
 		const fileStream = svgiconsToSvgfont({
 			fontName: family,
 			prependUnicode: true,
-			log: Function.prototype
+			log: Function.prototype,
+			fontHeight: 5000,
+			normalize: true,
 		}).on('data', function(data) {
 			return buffer.push(data);
 		}).on('end', function() {
