@@ -1,7 +1,7 @@
 'use strict';
 
 const Base = require('run-plugin-webpack');
-const svgiconsToSvgfont = require('svgicons2svgfont');
+const SvgiconsToSvgfont = require('svgicons2svgfont');
 const Font = require('fonteditor-core').Font;
 const fs = require('fs');
 const path = require('path');
@@ -25,6 +25,10 @@ function shouldReplace(svg, cssPath, newCssContent) {
 
 	// only rerender if svgs or scss are different
     return svgDifferent || cssDifferent ? true : false;
+}
+
+function noop() {
+
 }
 
 const Plugin = Base.extends(function(options) {
@@ -86,12 +90,12 @@ Plugin.prototype.generateFonts = function(family, files) {
 	return new Promise(function(resolve, reject) {
 		const buffer = [];
 		const unicodes = [];
-		const fileStream = svgiconsToSvgfont({
+		const fileStream = new SvgiconsToSvgfont({
 			fontName: family,
 			prependUnicode: true,
-			log: Function.prototype,
+			log: noop,
 			fontHeight: 5000,
-			normalize: true,
+			normalize: true
 		}).on('data', function(data) {
 			return buffer.push(data);
 		}).on('end', function() {
