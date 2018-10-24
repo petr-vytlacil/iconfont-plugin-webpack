@@ -86,6 +86,7 @@ Plugin.prototype.main = function() {
 };
 
 Plugin.prototype.generateFonts = function(family, files) {
+	const svgs = files.filter(RegExp.prototype.test.bind(/\.svg$/i));
 	const context = this;
 	return new Promise(function(resolve, reject) {
 		const buffer = [];
@@ -107,7 +108,7 @@ Plugin.prototype.generateFonts = function(family, files) {
 			return reject(err);
 		});
 		let startUnicode = 0xEA01;
-		files.forEach(function(file) {
+		svgs.forEach(function(file) {
 			const glyph = fs.createReadStream(file);
 			const unicode = String.fromCharCode(startUnicode++);
 			const name = path.parse(file).name;
