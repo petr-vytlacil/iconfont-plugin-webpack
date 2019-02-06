@@ -71,13 +71,16 @@ Plugin.prototype.main = function() {
 	});
 	const context = this;
 	const promises = (useMultipleGroups
-		? readdir.map(function(dir) {
+		? readdir.reduce(function(box, dir) {
 			const dirPath = path.join(src, dir);
-			const files = fs.readdirSync(dirPath).map(function(file) {
-				return path.resolve(dirPath, file);
-			});
-			return context.generateFonts(dir, files);
-		})
+			if (fs.lstatSync(dirPath).isDirectory()) {
+				const files = fs.readdirSync(dirPath).map(function(file) {
+					return path.resolve(dirPath, file);
+				});
+				box.push(context.generateFonts(dir, files));
+			}
+			return box;
+		}, [])
 		: [ this.generateFonts(this.options.family, readdir.map(function(file) {
 			return path.resolve(src, file);
 		})) ]

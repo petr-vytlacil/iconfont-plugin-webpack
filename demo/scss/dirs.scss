@@ -1,4 +1,5 @@
-@import "iconfont";
+@import "home";
+@import "other";
 
 *{
   color: #666;
@@ -13,14 +14,14 @@
 
 // easy integration with the automated mixin
 .my_custom_icon {
-  @include iconfont('ic_polygon');
+  @include iconfont('home/ic_polygon');
 }
 
 // or you can grab just the content as well
 .custom_icon{
-  font-family: "iconfont";
+  font-family: "other";
   &.little_star:before{
-    content: iconfont-item('ic_star');
+    content: iconfont-item('other/ic_star');
     font-style: normal;
   }
 }

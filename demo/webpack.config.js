@@ -1,34 +1,44 @@
-const webpack = require('webpack');
 const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const IconfontPlugin = require('./index.js');
+const IconfontPlugin = require('../index.js');
+
+const resolve = path.resolve.bind(path, __dirname);
 
 module.exports = {
     context: __dirname,
     entry: {
-        index: './demo/index.js'
+        index: './index.js',
+        dirs: './dirs.js'
     },
     output: {
-        path: path.resolve(__dirname + '/demo/build'),
+        path: resolve('build'),
         filename: '[name].js'
     },
     plugins: [
         new IconfontPlugin({
-            src: './demo/icons/',
-            family: 'iconfont-family',
+            src: resolve('icons-default'),
+            family: 'iconfont',
             dest: {
-                font: './demo/fonts/[family].[type]',
-                css: './demo/scss/_[family].scss'
+                font: resolve('fonts/[family].[type]'),
+                css: resolve('scss/_[family].scss')
             },
             watch: {
-                pattern: './demo/icons/**/*.svg'
+                cwd: __dirname,
+                pattern: 'icons-default/*.svg'
             }
         }),
-        new webpack.NormalModuleReplacementPlugin(/^scss!/, function (data) {
-                data.request = data.request.replace(/^scss!/, '!style-loader!css-loader!sass-loader!')
+        new IconfontPlugin({
+            src: resolve('icons-dirs'),
+            dest: {
+                font: resolve('fonts/[family].[type]'),
+                css: resolve('scss/_[family].scss')
+            },
+            watch: {
+                cwd: __dirname,
+                pattern: 'icons-dirs/**/*.svg'
             }
-        ),
-        new ExtractTextPlugin('styles.css')
+        }),
+        new ExtractTextPlugin('[name].css')
     ],
     module: {
         rules: [
@@ -53,14 +63,4 @@ module.exports = {
             }
         ]
     },
-    resolve: {
-        modules: [
-            path.resolve('./node_modules')
-        ],
-        extensions: ['.ts','.js']
-    },
-    node: {
-        process: false,
-        global: false
-    }
 };

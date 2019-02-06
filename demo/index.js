@@ -1,3 +1,3 @@
 require('./scss/index.scss');
 
-console.log('booted');
+console.log('example for default usage');

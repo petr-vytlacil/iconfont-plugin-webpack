@@ -12,7 +12,7 @@
 
 #### Usage
 
-You can see a simple example within the [Demo Config](webpack.config.js), but basically you just need to include the package at the top of your webpack config like this:
+You can see a simple example within the [Demo Config](demo/webpack.config.js), but basically you just need to include the package at the top of your webpack config like this:
 
 `const IconfontPlugin = require('iconfont-plugin-webpack');`
 
@@ -41,9 +41,7 @@ The result will be a directory with Fonts in the formats eot, svg, ttf and woff 
 
 ```scss
 $__iconfont__data: map-merge(if(global_variable_exists('__iconfont__data'), $__iconfont__data, ()), (
-	"iconfont-family": (
-		// your icons land here
-	)
+	// iconfont data here
 ));
 
 
@@ -63,71 +61,48 @@ $icon-common-class: 'icon' !default;
 // if you use the prefix to be 'icon-' it would result in .icon-star
 $icon-prefix: '' !default; 
 
+// helper function to get the correct font group
 @function iconfont-group($group: null) {
-	@if (null == $group) {
-		$group: nth(map-keys($__iconfont__data), 1);
-	}
-	@if (false == map-has-key($__iconfont__data, $group)) {
-		@warn 'Undefined Iconfont Family!';
-		@return ();
-	}
-	@return map-get($__iconfont__data, $group);
+  // ...
 }
 
+// helper function to get the correct icon of a group
 @function iconfont-item($name) {
-	$slash: str-index($name, '/');
-	$group: null;
-	@if ($slash) {
-		$group: str-slice($name, 0, $slash - 1);
-		$name: str-slice($name, $slash + 1);
-	} @else {
-		$group: nth(map-keys($__iconfont__data), 1);
-	}
-	$group: iconfont-group($group);
-	@if (false == map-has-key($group, $name)) {
-		@warn 'Undefined Iconfont Glyph!';
-		@return '';
-	}
-	@return map-get($group, $name);
+  // ...
 }
 
+// complete mixing to include the icon
+// usage:
+// .my_icon{ @include iconfont('star') }
 @mixin iconfont($icon) {
-  &:before{
-    font-family: "iconfont-family";
-    font-style: normal;
-    font-weight: 400;
-    content: iconfont-item($icon);
+  // ...
+}
+
+// creates the font face tag if the variable is set to true (default)
+@if $create-font-face == true {
+  @font-face {
+   font-family: "iconfont";
+   src: url('../fonts/iconfont.eot'); /* IE9 Compat Modes */
+   src: url('../fonts/iconfont.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+      url('../fonts/iconfont.woff') format('woff'), /* Pretty Modern Browsers */
+      url('../fonts/iconfont.ttf')  format('truetype'), /* Safari, Android, iOS */
+      url('../fonts/iconfont.svg') format('svg'); /* Legacy iOS */
   }
 }
 
-@if $create-font-face == true{
-	@font-face {
-	 font-family: "iconfont-family";
-	 src: url('../fonts/iconfont-family.eot'); /* IE9 Compat Modes */
-	 src: url('../fonts/iconfont-family.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-		  url('../fonts/iconfont-family.woff') format('woff'), /* Pretty Modern Browsers */
-		  url('../fonts/iconfont-family.ttf')  format('truetype'), /* Safari, Android, iOS */
-		  url('../fonts/iconfont-family.svg') format('svg'); /* Legacy iOS */
-	 
-	}
-}
+// creates icon classes for each individual loaded svg (default)
+@if $create-icon-classes == true {
+  .#{$icon-common-class} {
+    font-style: normal;
+    font-weight: 400;
 
-@if $create-icon-classes == true{
-	.#{$icon-common-class}{
-		font-family: "iconfont-family";
-		font-style: normal;
-		font-weight: 400;
-		
-		@each $family, $map in $__iconfont__data {
-			@each $icon, $content in $map {
-				&.#{$icon-prefix}#{$icon}{
-					&:before{
-						content: iconfont-item($icon);
-					}
-				}
-			}
-		}
-	}
+    @each $icon, $content in map-get($__iconfont__data, "iconfont") {
+      &.#{$icon-prefix}#{$icon}:before {
+        font-family: "iconfont";
+        content: iconfont-item("iconfont/#{$icon}");
+      }
+    }
+  }
 }
 ```
 
@@ -140,11 +115,11 @@ npm install
 npm run demo
 ```
 
-You will then find the generated fonts within `/demo/fonts` and the generated .scss within `/demo/scss/_iconfont-family.scss`.
+You will then find the generated fonts within `/demo/fonts` and the generated .scss within `/demo/scss`.
 
 If the fonts get bigger than 8192 bytes they will get extracted into their own files,
 otherwhise file-loader will embed them as base64 directly into the .css
-(See configuration for file-loader in [webpack.config.js](webpack.config.js#L47-L53))
+(See configuration for file-loader in [demo/webpack.config.js](demo/webpack.config.js#L52-L63))
 
 ### Maintainers
 
@@ -155,7 +130,7 @@ otherwhise file-loader will embed them as base64 directly into the .css
         <a href="https://github.com/HaoyCn">
           <img width="150" height="150" src="https://github.com/HaoyCn.png?v=3&s=150">
           </br>
-          徐浩洋 · HaoyCn
+          HaoyCn
         </a>
       </td>
       <td align="center">

@@ -1,3 +1,7 @@
-node_modules 
+node_modules/
+demo/build/*.css
+demo/build/*.js
+demo/fonts/
+demo/scss/_*.scss
 .idea
 .DS_Store
