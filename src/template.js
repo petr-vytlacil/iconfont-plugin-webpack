@@ -113,10 +113,10 @@ module.exports = function(args) {
 
     const replacements = {
         __FAMILY__: family,
-        __RELATIVE_FONT_PATH__: pathToFonts,
+        __RELATIVE_FONT_PATH__: pathToFonts
     };
 
-    const str = TEMPLATE.replace(/__FAMILY__|__RELATIVE_FONT_PATH__|goat/gi, function(matched){
+    const str = TEMPLATE.replace(RegExp(Object.keys(replacements).join('|'), 'gi'), function(matched) {
         return replacements[matched];
     });
 
