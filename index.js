@@ -52,6 +52,7 @@ Plugin.prototype.getOptions = function(options) {
 		? opts.cssTemplate
 		: require('./src/template')
 	);
+	const fontPath = opts.fontPath || null;
 	return {
 		src: src,
 		dest: {
@@ -59,7 +60,8 @@ Plugin.prototype.getOptions = function(options) {
 			css: dest.css,
 		},
 		cssTemplate: cssTemplate,
-		family: ('string' === typeof opts.family && opts.family) || 'iconfont'
+		family: ('string' === typeof opts.family && opts.family) || 'iconfont',
+		fontPath: fontPath
 	};
 };
 
@@ -88,7 +90,9 @@ Plugin.prototype.main = function() {
 	return Promise.all(promises);
 };
 
-Plugin.prototype.generateFonts = function(family, files) {
+Plugin.prototype.generateFonts = function(options, files) {
+	const family = options.family;
+	const fontPath = options.fontPath;
 	const svgs = files.filter(RegExp.prototype.test.bind(/\.svg$/i));
 	const context = this;
 	return new Promise(function(resolve, reject) {
@@ -151,7 +155,7 @@ Plugin.prototype.generateFonts = function(family, files) {
 		const cssContent = context.options.cssTemplate({
 			unicodes: unicodes,
 			family: family,
-			fontPath: relativePathToFonts.replace(/\\/g, '/'),
+			fontPath: fontPath || relativePathToFonts.replace(/\\/g, '/'),
 		});
 		const cssPath = context.options.dest.css.replace(/\[family\]/g, family);
 
