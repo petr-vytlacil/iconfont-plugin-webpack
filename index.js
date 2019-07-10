@@ -83,7 +83,7 @@ Plugin.prototype.main = function() {
 			}
 			return box;
 		}, [])
-		: [ this.generateFonts(this.options.family, readdir.map(function(file) {
+		: [ this.generateFonts(this.options, readdir.map(function(file) {
 			return path.resolve(src, file);
 		})) ]
 	);
